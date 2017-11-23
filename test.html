@@ -4,76 +4,45 @@
 
 <script>
 
-// Setup
+function permAlone(str){
+  array = str.split("");
+  length = str.length;
 
-// Setup
+  permArray = [];
 
+  getPerms(length,array);
 
-function checkCashRegister(price, cash, cid) {
-  var change = (cash - price).toFixed(2);
-  var register = 0;
-  var regObj = [];
-  var returnChange = [];
-  
-  // Here is your change, ma'am.
-  for(i=0;i<cid.length;i++){
-    register += cid[i][1]; 
-  }
-  
-  if(change>register){
-    return "Insufficient Funds";
-  }
-  if(change==register){
-    return "Closed";
-  }
-  
-  regObj[0] = [100,cid[8][1],cid[8][0]];
-  regObj[1]= [20,cid[7][1],cid[7][0]];
-  regObj[2] = [10,cid[6][1],cid[6][0]];
-  regObj[3] = [5,cid[5][1],cid[5][0]];
-  regObj[4] = [1,cid[4][1],cid[4][0]];
-  regObj[5] = [.25,cid[3][1],cid[3][0]];
-  regObj[6] = [.10,cid[2][1],cid[2][0]];
-  regObj[7] = [.05,cid[1][1],cid[1][0]];
-  regObj[8] = [.01,cid[0][1],cid[0][0]];
-
-debugger;
-  for(i=0; i<regObj.length-1; i++){
-    
-      if(change>regObj[i+1][0])
-        {requiredUnits = Math.floor(change/regObj[i+1][0]);
-         availableUnits = regObj[i+1][1]/regObj[i+1][0]
+  function getPerms(n, array){
+    if (n==1){
+      permArray.push(array);
+    }
+    else{
+      
+      for(i=0; i<(n-1); i++){
         
-         Units = Math.min(requiredUnits,availableUnits)
+        getPerms(n-1, array);
 
-         returnChange.push([regObj[i+1][2],Units*regObj[i+1][0]]);
-         
-         num = (Units*regObj[i+1][0]).toFixed(2);
-         change = Math.round((change-num) * 100) / 100
-        }//if
-  }
-  
-  if(change>0){
-    return "Insufficient Funds";
-  }
-  
-  return returnChange;
-}
+        if (n%2==0){
+          temp = array[i];
+          array[i] = array[n-1];
+          array[n-1] = array[i];
+        }  
+        else{
+          temp = array[0];
+          array[0] = array[n-1];
+          array[n-1] = array[0];
+        }//else
+      }//for
+      getPerms(n-1,array);
+    }
 
-// Example cash-in-drawer array:
-// [["PENNY", 1.01],
-// ["NICKEL", 2.05],
-// ["DIME", 3.10],
-// ["QUARTER", 4.25],
-// ["ONE", 90.00],
-// ["FIVE", 55.00],
-// ["TEN", 20.00],
-// ["TWENTY", 60.00],
-// ["ONE HUNDRED", 100.00]]
-console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1.00], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]));
+  }//getPerms
 
+  return permArray;
 
- 
+}//permAlone
+
+ console.log(permAlone('abc'));
 
 
 </script>
